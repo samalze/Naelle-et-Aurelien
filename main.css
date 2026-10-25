@@ -1,0 +1,461 @@
+body{
+    margin:0;
+    padding:0;
+}
+
+p{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+h3{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#agrandi {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  cursor: zoom-out;
+
+  opacity: 0;                 /* transparent */
+  visibility: hidden;         /* invisible et hors d'atteinte du clavier */
+  pointer-events: none;       /* ne bloque pas les clics en dessous */
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+#agrandi.ouvert {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#agrandi img, #agrandi video {
+  max-width: 80vw;
+  max-height: 80vh;
+  border-radius: 12px;
+  object-fit: contain;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+#agrandi.ouvert img, #agrandi.ouvert video {
+  transform: scale(1);
+}
+
+
+
+#petales {
+  position: fixed;
+  inset: 0;               /* raccourci pour top/right/bottom/left: 0 */
+  pointer-events: none;   /* les clics passent à travers */
+  overflow: hidden;
+  z-index: 0;
+}
+
+.petale {
+  position: absolute;
+  top: -20px;
+  width: 12px;
+  height: 16px;
+  background: #ffb3c6;
+  border-radius: 150% 0 150% 0;   /* donne une forme de feuille */
+  animation-name: chute;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes chute {
+  from { transform: translateY(0) translateX(0) rotate(0deg); }
+  50%  { transform: translateY(55vh) translateX(25px) rotate(180deg); }
+  to   { transform: translateY(110vh) translateX(-10px) rotate(360deg); }
+}
+
+#cadre{
+    margin:0;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+    background-color: #ffe3e8;
+}
+
+#grand_cadre{
+    height: 70%;
+    width: 80%;
+    background-color: pink;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cadre_principal{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    transition: transform 0.45s ease;
+    touch-action: pan-y;
+}
+
+#cadre_principal section {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.titre{
+    margin:0;
+    font-family: "Dancing Script";
+}
+
+h1{
+    font-size: 60px;
+    color:#5a1f35;
+}
+
+h2{
+    font-size: 40px;
+    color:#7a2e4a;
+}
+
+p{
+    font-family: "Nunito";
+}
+
+.compteur{
+    display:flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.bloc {
+  background-color: #ffe3e8;
+  border-radius: 16px;
+  padding: 15px 20px;
+  min-width: 80px;
+  text-align: center;
+  color: #7a2e4a;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.bloc span {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: bold;
+  font-variant-numeric: tabular-nums;
+  color: #5a1f35;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.point {
+  width: 30px;
+  height: 12px;
+  border: none;
+  border-radius: 15px;
+  padding: 0;
+  background: rgba(122, 46, 74, 0.3);
+  cursor: pointer;
+}
+.point.actif { background: #7a2e4a; }
+.point.verrouille { opacity: 0.35; cursor: default; position: relative; }
+
+.point.verrouille::after {
+  content: "Pas si vite !";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-bottom: 8px;
+  transform: translateX(-50%) translateY(4px);
+  white-space: nowrap;
+  background: #7a2e4a;
+  color: #fff0f3;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.point.verrouille:hover::after,
+.point.verrouille:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+#points {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+#recule, #avance {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: 0.2s;
+  background-color: #ffe3e8;
+}
+#recule:hover, #avance:hover{
+    transform: translateY(-50%) scale(1.05);
+    transition-duration: 0.2s;
+}
+
+#recule:active, #avance:active{
+    transform: translateY(-50%) scale(0.95);
+    transition-duration: 0.3s;
+}
+
+#recule { left: 12px; }
+#avance { right: 12px; }
+button:disabled { 
+    opacity: 0.0; 
+    cursor: default;
+    pointer-events: none;
+}
+
+#recule:disabled:hover, #avance:disabled:hover {
+  background-color: inherit;
+  transform: translateY(-50%);
+}
+
+
+
+.musique_contenu {
+  display: flex;
+  flex-wrap: wrap;            /* les colonnes s'empilent si l'écran est étroit */
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  width: 100%;
+  padding: 0 70px;            /* laisse la place aux flèches latérales */
+  box-sizing: border-box;
+}
+
+.musique_texte {
+  flex: 1 1 220px;
+  text-align: center;
+}
+
+.musique_carte {
+  flex: 1 1 280px;
+  max-width: 400px;
+}
+#nb_musiques {
+  margin: 0;
+  font-size: 84px;
+  font-weight: bold;
+  line-height: 1;
+  color: #5a1f35;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-variant-numeric: tabular-nums;   /* les chiffres gardent une largeur fixe */
+}
+
+.musique_legende {
+  margin: 6px 0 14px;
+  font-size: 18px;
+  font-style: italic;
+  color: #7a2e4a;
+}
+
+.musique_phrase {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.musique_carte {
+  background: #fff0f3;
+  border-radius: 20px;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.musique_carte iframe {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+}
+
+
+
+#page_frise {
+  padding: 0 60px;          /* laisse la place aux flèches latérales */
+}
+
+#frise {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 40px;
+}
+
+#ligne, #rempli {
+  position: absolute;
+  top: 9px;
+  left: 13px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+#ligne {
+  right: 13px;
+  background: rgba(122, 46, 74, 0.25);
+}
+
+#rempli {
+  width: 0;
+  background: #7a2e4a;
+  transition: width 0.4s ease;
+}
+
+.etape {
+  position: relative;
+  z-index: 1;                /* passe devant la ligne */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 56px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  color: #7a2e4a;
+}
+
+.rond {
+  width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  border: 3px solid #7a2e4a;
+  border-radius: 50%;
+  background: #fff0f3;
+  transition: transform 0.25s, background 0.25s;
+}
+
+.etape:not(.verrouille):hover .rond { transform: scale(1.2); }
+.etape.fait .rond                   { background: #7a2e4a; }
+.etape.actif .rond                  { background: #7a2e4a; transform: scale(1.35); }
+.etape.actif                        { font-weight: bold; }
+.etape.verrouille                   { cursor: default; }
+
+.etape.verrouille::after {
+  content: "Pas si vite !";
+  position: absolute;
+  top: 100%;                      /* juste sous le bouton */
+  left: 50%;
+  margin-top: 8px;
+  transform: translateX(-50%) translateY(-4px);
+  white-space: nowrap;            /* garde le message sur une ligne */
+  background: #7a2e4a;
+  color: #fff0f3;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.etape.verrouille:hover::after,
+.etape.verrouille:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.etape.verrouille .rond,
+.etape.verrouille span:last-child {
+  opacity: 0.4;                   /* grise le rond et le libellé seulement */
+}
+
+#carte_frise {
+  margin-top: 24px;
+  width: 100%;
+  max-width: 540px;
+  box-sizing: border-box;
+  background: #fff0f3;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-wrap: wrap;           /* la photo passe au-dessus du texte sur petit écran */
+  gap: 16px;
+  align-items: center;
+  text-align: left;
+  animation: apparition 0.35s ease;
+}
+
+#photo_frise {
+  flex: 1 1 180px;
+  min-height: 140px;
+  max-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(122, 46, 74, 0.45);
+  border-radius: 12px;
+  font-style: italic;
+  color: #7a2e4a;
+  overflow: hidden;
+  position: relative;
+}
+
+#photo_frise img, #photo_frise video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* remplit le cadre sans déformer */
+  cursor: zoom-in;
+}
+
+#photo_frise::after {
+  content: "";
+  z-index: 1;
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;   /* le clic traverse le voile jusqu'à l'image */
+}
+
+#photo_frise:hover::after {
+  opacity: 1;
+}
+
+.infos { flex: 1 1 200px; }
+
+@keyframes apparition {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Page Title</title>
+    <link rel='stylesheet' href='main.css'>
+    <script src="compteur.js" defer></script>
+
+    <!--Polices-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="petales"></div>
+    <div id="cadre">
+        <div id="grand_cadre">
+            <div id="cadre_principal">
+                <section id="page_1">
+                    <h1 class="titre">Naëlle et Aurélien</h1>
+                    <h2 class="titre">6 mois ou...</h2>
+                    <div class="compteur">
+                        <div class="bloc"><span id="jours">0</span> jours</div>
+                        <div class="bloc"><span id="heures">0</span> heures</div>
+                        <div class="bloc"><span id="minutes">0</span> minutes</div>
+                        <div class="bloc"><span id="secondes">0</span> secondes</div>
+                    </div>
+                </section>
+                <section id="page_musique">
+                    <div class="musique_contenu">
+                    
+                        <div class="musique_texte">
+                            <h2 class="titre">6 mois et…</h2>
+                            <p id="nb_musiques">0</p>
+                            <p class="musique_legende">musiques partagées 💃🕺</p>
+                            <p class="musique_phrase">
+                                Alias notre petite fougère d'amour 🌿❤️
+                            </p>
+                        </div>
+                  
+                        <div class="musique_carte">
+                            <iframe title="deezer-widget" src="https://widget.deezer.com/widget/light/playlist/15016021923" width="60%" height="240" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write" border-radius="16px"></iframe>
+                        </div>
+                  
+                    </div>
+                </section>
+                <section>
+                    <h2 class="titre">6 mois ou...</h2>
+
+                    <div id="frise">
+                      <div id="ligne"></div>
+                      <div id="rempli"></div>
+                    </div>  
+
+                    <div id="carte_frise">
+                      <div id="photo_frise">Votre photo ici</div>
+                      <div class="infos">
+                        <p id="date_frise"></p>
+                        <h3 id="titre_frise"></h3>
+                        <p id="texte_frise"></p>
+                      </div>
+                    </div>
+                </section>
+                <section>
+
+                </section>
+                <section>
+
+                </section>
+                <section>
+
+                </section>
+            </div>
+            <button id="recule">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button id="avance">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+            <div id="points"></div>
+        </div>
+    </div>
+    <div id="agrandi">
+        <img id="agrandi_img" src="" alt="">
+        <video id="agrandi_video" loop playsinline></video>
+    </div>
+</body>
+</html>
