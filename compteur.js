@@ -79,6 +79,9 @@ function aller(numero) {
   if (pages[courant].id === "page_musique") {
   demarrerComptage();
   }
+  if (pages[courant].id === "page_messages") {
+    demarrerMessages();
+  }
 }
 
 for (let i = 0; i < pages.length; i++) {
@@ -309,3 +312,115 @@ agrandi.addEventListener("click", fermerAgrandi);
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") fermerAgrandi();
 });
+
+
+// Page messages
+
+const cibleMessages = 12480;    // à remplacer par votre vrai chiffre
+
+const messagesExemple = [
+  { de: "elle", texte: "🚨🚨🚨🚨", pause: 0},
+  { de: "elle", texte: "Aurélien", pause: 2000},
+  { de: "lui",  texte: "Voui ?", pause: 1000},
+  { de: "elle", texte: "Regarder l'heure", pause: 2000},
+  { de: "lui",  texte: "Ah ouais tu conjugues même plus c’est chaud là", pause: 2000},
+  { de: "elle", texte: "Javoue pardon", pause: 0},
+  { de: "elle", texte: "Je te vouvoie", pause: 1000},
+  { de: "lui",  texte: "Bah nn toujours pas", pause: 0},
+  { de: "lui",  texte: "Y’aurais un z", pause: 2000},
+  { de: "elle", texte: "Regarderz ?", pause: 1000},
+  { de: "lui",  texte: "Regardez", pause: 1000},
+  { de: "elle", texte: "Tavais compris que javaks compeis quznd meme ?", pause: 2000},
+  { de: "lui",  texte: "Nn", pause: 1000},
+  { de: "lui",  texte: "En plus guette le nombre de fautes", pause: 1000},
+  { de: "elle", texte: "Mais CEST TON NOIR LA !", pause: 2000},
+  { de: "lui",  texte: "MDRRRRR", pause: 0},
+  { de: "lui",  texte: "NE PAS SORTIR DU CONTEXTE", pause: 0},
+];
+
+const nbMessages = document.getElementById("nb_messages");
+const chatMessages = document.getElementById("chat_messages");
+
+let minuteurMessages = null;   // retient le setInterval du compteur
+let delaisBulles = [];         // retient les setTimeout des bulles en attente
+
+function compterMessages() {
+  clearInterval(minuteurMessages);       // annule un comptage déjà en cours
+  let n = 0;
+  nbMessages.textContent = "0";
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    nbMessages.textContent = cibleMessages.toLocaleString("fr-FR");
+    return;
+  }
+
+  minuteurMessages = setInterval(() => {
+    n += Math.ceil((cibleMessages - n) / 14);
+    nbMessages.textContent = n.toLocaleString("fr-FR");
+
+    if (n >= cibleMessages) {
+      nbMessages.textContent = cibleMessages.toLocaleString("fr-FR");
+      clearInterval(minuteurMessages);
+    }
+  }, 40);
+}
+
+function creerBulle(message) {
+  const bulle = document.createElement("div");
+  bulle.className = "bulle " + message.de;
+
+  const auteur = document.createElement("small");
+  auteur.textContent = message.de === "elle" ? "Prix Nobel de Physique" : "Prof particulier de physique";
+
+  bulle.appendChild(auteur);
+  bulle.appendChild(document.createTextNode(message.texte));
+  chatMessages.appendChild(bulle);
+}
+const attenteDepart = 500;    // avant la première bulle
+const ecartBulles = 1000;     // entre deux bulles
+
+function lancerBulles() {
+  // Annule les bulles encore en attente et vide la conversation
+  delaisBulles.forEach(clearTimeout);
+  delaisBulles = [];
+  chatMessages.innerHTML = "";
+
+  const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduit) {
+    messagesExemple.forEach(creerBulle);      // tout d'un coup
+    return;
+  }
+  let temps = attenteDepart;
+
+  messagesExemple.forEach((message) => {
+    const duree = Math.min(500 + message.texte.length * 40, 2200);
+
+    // Temps 1 : les points apparaissent
+    const t1 = setTimeout(() => {
+      message.indicateur = creerIndicateur(message);
+    }, temps);
+
+    // Temps 2 : les points disparaissent, le message arrive
+    const t2 = setTimeout(() => {
+      message.indicateur.remove();
+      creerBulle(message);
+    }, temps + duree);
+
+    delaisBulles.push(t1, t2);
+    temps += duree + (message.pause ?? ecartBulles);
+})};
+
+function demarrerMessages() {
+  compterMessages();
+  lancerBulles();
+}
+
+function creerIndicateur(message) {
+  const indicateur = document.createElement("div");
+  indicateur.className = "bulle ecrit " + message.de;
+  indicateur.setAttribute("aria-hidden", "true");   // ignoré par les lecteurs d'écran
+  indicateur.innerHTML = "<span></span><span></span><span></span>";
+  chatMessages.appendChild(indicateur);
+  return indicateur;     // on le renvoie pour pouvoir le supprimer plus tard
+}
