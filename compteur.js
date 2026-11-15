@@ -82,6 +82,9 @@ function aller(numero) {
   if (pages[courant].id === "page_messages") {
     demarrerMessages();
   }
+  if (pages[courant].id === "page_stats") {
+    demarrerStats();
+  }
 }
 
 for (let i = 0; i < pages.length; i++) {
@@ -316,7 +319,10 @@ document.addEventListener("keydown", (e) => {
 
 // Page messages
 
-const cibleMessages = 12480;    // à remplacer par votre vrai chiffre
+const cibleMessages = 121743; 
+const cibleElle = 74713;                        // messages envoyés par Naëlle
+const cibleLui = 47030;                         // messages envoyés par Aurélien
+
 
 const messagesExemple = [
   { de: "elle", texte: "🚨🚨🚨🚨", pause: 0},
@@ -344,25 +350,31 @@ const chatMessages = document.getElementById("chat_messages");
 let minuteurMessages = null;   // retient le setInterval du compteur
 let delaisBulles = [];         // retient les setTimeout des bulles en attente
 
-function compterMessages() {
-  clearInterval(minuteurMessages);       // annule un comptage déjà en cours
+function compterVers(element, cible) {
+  clearInterval(element.minuteur);         // chaque élément garde son propre minuteur
   let n = 0;
-  nbMessages.textContent = "0";
+  element.textContent = "0";
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    nbMessages.textContent = cibleMessages.toLocaleString("fr-FR");
+    element.textContent = cible.toLocaleString("fr-FR");
     return;
   }
 
-  minuteurMessages = setInterval(() => {
-    n += Math.ceil((cibleMessages - n) / 14);
-    nbMessages.textContent = n.toLocaleString("fr-FR");
+  element.minuteur = setInterval(() => {
+    n += Math.ceil((cible - n) / 14);
+    element.textContent = n.toLocaleString("fr-FR");
 
-    if (n >= cibleMessages) {
-      nbMessages.textContent = cibleMessages.toLocaleString("fr-FR");
-      clearInterval(minuteurMessages);
+    if (n >= cible) {
+      element.textContent = cible.toLocaleString("fr-FR");
+      clearInterval(element.minuteur);
     }
   }, 40);
+}
+
+function compterMessages() {
+  compterVers(nbMessages, cibleMessages);
+  compterVers(document.getElementById("nb_elle"), cibleElle);
+  compterVers(document.getElementById("nb_lui"), cibleLui);
 }
 
 function creerBulle(message) {
@@ -423,4 +435,57 @@ function creerIndicateur(message) {
   indicateur.innerHTML = "<span></span><span></span><span></span>";
   chatMessages.appendChild(indicateur);
   return indicateur;     // on le renvoie pour pouvoir le supprimer plus tard
+}
+
+// Page stats
+
+const statsDonnees = {
+  heures: 312,     // total d'heures d'appel
+  appels: 184,
+  vocaux: 1250,
+  photos: 2310
+};
+
+function compterVers(element, cible, quandFini) {
+  clearInterval(element.minuteur);
+  let n = 0;
+  element.textContent = "0";
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    element.textContent = cible.toLocaleString("fr-FR");
+    if (quandFini) quandFini(cible);
+    return;
+  }
+
+  element.minuteur = setInterval(() => {
+    n += Math.ceil((cible - n) / 14);
+    element.textContent = n.toLocaleString("fr-FR");
+
+    if (n >= cible) {
+      element.textContent = cible.toLocaleString("fr-FR");
+      clearInterval(element.minuteur);
+      if (quandFini) quandFini(cible);    // appelle la fonction donnée, si elle existe
+    }
+  }, 40);
+}
+
+function demarrerStats() {
+  // Réinitialise le texte sous les heures
+  const equiv = document.getElementById("stats_equiv");
+  equiv.textContent = "passées au téléphone";
+
+  // Les trois comptages
+  compterVers(document.getElementById("stats_heures"), statsDonnees.heures, (h) => {
+    equiv.textContent = "soit environ " + Math.round(h / 24) + " jours d'affilée";
+  });
+  compterVers(document.getElementById("stats_appels"), statsDonnees.appels);
+  compterVers(document.getElementById("stats_vocaux"), statsDonnees.vocaux);
+  compterVers(document.getElementById("stats_photos"), statsDonnees.photos);
+
+  // Rejoue l'apparition des cartes
+  document.querySelectorAll(".stats_carte").forEach((carte) => {
+    carte.style.animation = "none";
+    carte.offsetWidth;              // force le navigateur à recalculer
+    carte.style.animation = "";
+  });
 }

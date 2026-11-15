@@ -498,6 +498,23 @@ button:disabled {
   line-height: 1.5;
 }
 
+.messages_repartition {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.messages_repartition .bloc {
+  min-width: 90px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+}
+
+.messages_repartition .bloc span {
+  font-size: 1.6rem;           /* écrase la grande taille de .bloc span */
+}
+
 #chat_messages {
   flex: 1 1 280px;
   max-width: 380px;
@@ -580,4 +597,99 @@ button:disabled {
 @keyframes rebond {
   0%, 60%, 100% { transform: translateY(0);   opacity: 0.4; }
   30%           { transform: translateY(-4px); opacity: 1; }
+}
+
+
+
+.stats_contenu {
+  width: 100%;
+  max-width: 800px;
+  padding: 0 70px;             /* laisse la place aux flèches */
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.stats_hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 14px;
+  padding: 18px 16px;
+  background: #fff0f3;
+  border-radius: 20px;
+}
+
+.stats_icone_hero { color: #7a2e4a; }
+
+.stats_hero_nombre {
+  margin: 0;
+  font-size: 54px;
+  font-weight: bold;
+  line-height: 1;
+  color: #5a1f35;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.stats_hero_nombre small {
+  margin-left: 6px;
+  font-size: 22px;
+  font-weight: normal;
+  font-style: italic;
+  color: #7a2e4a;
+}
+
+.stats_hero_texte {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #7a2e4a;
+  text-align: left;
+}
+
+.stats_grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 12px;
+}
+
+.stats_carte {
+  padding: 14px 8px;
+  background: #fff0f3;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #7a2e4a;
+  animation: apparitionCarte 0.45s ease backwards;
+}
+
+.stats_carte svg {
+  display: block;
+  margin: 0 auto 6px;
+}
+
+.stats_carte b {
+  display: block;
+  font-size: 26px;
+  line-height: 1.2;
+  color: #5a1f35;
+  font-variant-numeric: tabular-nums;
+}
+
+.stats_carte:nth-child(2) { animation-delay: 0.1s; }
+.stats_carte:nth-child(3) { animation-delay: 0.2s; }
+.stats_carte:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes apparitionCarte {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 600px) {
+  .stats_contenu { padding: 0 56px; }
+  .stats_hero_nombre { font-size: 42px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stats_carte { animation: none; }
 }
